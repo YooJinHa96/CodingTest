@@ -29,35 +29,51 @@ int solution(vector<int> priorities, int location)
         q1.push(make_pair(i, priorities[i]));
     }
 
-    while (!q1.empty())
+    int count = 0;
+    while (!q1.empty() || !q2.empty())
     {
         pair<int, int> fro = make_pair(q1.front().first, q1.front().second);
         q1.pop();
-        for (int i = 0; i < q1.size(); i++)
+        int size = q1.size();
+        while (!q1.empty())
         {
-            if(fro.second>q1.front().second){
+            if (fro.second >= q1.front().second)
+            {
                 q2.push(make_pair(q1.front().first, q1.front().second));
                 q1.pop();
             }
-            else{
-                q1.push(make_pair(fro.first,fro.second));
-                while(!q2.empty()){
-                    q1.push(make_pair(q2.front().first,q2.front().second));
+            else
+            {
+                q1.push(make_pair(fro.first, fro.second));
+                while (!q2.empty())
+                {
+                    q1.push(make_pair(q2.front().first, q2.front().second));
                     q2.pop();
                 }
-
+                fro = make_pair(q1.front().first, q1.front().second);
+                q1.pop();
             }
         }
+
+        count++;
+        mp[fro.first].first = count;
+
+        while (!q2.empty())
+        {
+            q1.push(make_pair(q2.front().first, q2.front().second));
+            q2.pop();
+        }
+
     }
-    for (auto m : mp)
-    {
-        cout << m.first << ' ' << m.second.first << ' ' << m.second.second << '\n';
-    }
+
+
+    answer = mp[location].first;
     return answer;
 }
 
 int main()
 {
 
-    solution({1, 2, 3, 4, 5}, 2);
+    int s = solution({1, 1, 9, 1, 1, 1}, 0);
+    cout << s << '\n';
 }
