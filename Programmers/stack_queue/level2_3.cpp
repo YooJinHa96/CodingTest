@@ -26,11 +26,8 @@ int solution(int bridge_length, int weight, vector<int> truck_weights)
             int current_count = bridge.front().second;
             bridge_capacity+=bridge.front().first;
            
-            cout<<time<<" "<<current_count<<" "<<bridge.front().first<< '\n';
             bridge.pop();
-          //  cout<<"current : "<<current_count<<'\n';
-         //   cout<<"nest : "<<bridge.front().second<<'\n';
-            if(!bridge.empty()&&bridge.front().first!=0)
+            if(!bridge.empty())
             bridge.front().second = bridge_length-1;
         }
         if(!bridge.empty())
@@ -43,8 +40,9 @@ int solution(int bridge_length, int weight, vector<int> truck_weights)
             bridge.push(make_pair(tw.front(), 1));
             bridge_capacity -= tw.front();
             tw.pop();
+
         }
-        else if(!tw.empty()&&bridge_capacity < tw.front()){
+        else if(!tw.empty()&&bridge_capacity < tw.front()&& bridge.size() != bridge_length){
             bridge.push(make_pair(0,0));
 
         }
