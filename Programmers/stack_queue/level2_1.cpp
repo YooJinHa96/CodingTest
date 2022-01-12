@@ -1,7 +1,11 @@
 /*
+Programmers 기능 개발 
 
 스택/ 큐 -> level 2 -> 기능개발
 작업 진도랑 개발 속도가 적힌 정수 배열이 주어질 때 각 배포마다 몇개 기능이 배포되는지 구하기
+진행사항과 speeds를 이용해 하나당 걸리는 일수를 먼저 구해서 remains 큐에 다 넣음 계산 : (100 - progresses[]) /speeds -> 이때 나누어떨어지지 않는 것들도 있기 때문에 이럴때 +1시킴
+다 구했으면 remains에서 제일 앞에 값을 꺼내서 다음 값들과 비교하며 작거나 같은 값들을 count\
+
 
 테스트 11 반례 생긴 이유 : 조건문에서 a%=speeds[i]!=0을 해서 우선순위가 %기가 아닌 !=0이 먼저 되서 반례가 생긴걸로 추측
 
@@ -34,6 +38,7 @@ vector<int> solution(vector<int> progresses, vector<int> speeds) {
             answer.push_back(0);
          return answer;
      }
+     //q에서 나온값과 그 후에 나온 값들 비교해서 q보다 작거나 같은 값들은 이미 그 전에 개발이 끝남. 그래서 작거나 같은 값들을 카운트
     while(!remains.empty()){
         
         int count=0;
