@@ -1,20 +1,24 @@
+/*
+
+Programmers Heap 이중 우선순위 큐
+
+명령어에 따라 삽입, 최댓값 삭제, 최소값 삭제 문제
+
+vector를 이용함
+삭제명령어 일때 최댓값이면 오름차순으로 정렬해서 제일 뒤에 값 삭제 <- pop_back
+삭제명령어가 최솟값으면 내림차순으로 정렬해서 제일 뒤에 값 삭제 
+
+*/
+
 #include <string>
 #include <vector>
 #include <queue>
 #include <iostream>
 #include <algorithm>
-#include <cstring>
-#include <map>
 using namespace std;
-bool isNumber(const string &str)
-{
-    for (char const &c : str)
-    {
-        if (std::isdigit(c) == 0)
-            return false;
-    }
-    return true;
-}
+
+
+
 vector<int> solution(vector<string> operations)
 {
     vector<int> answer;
