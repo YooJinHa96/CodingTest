@@ -1,3 +1,25 @@
+/*
+
+    Programmers Greedy 조이스틱 
+    
+    
+    AA~ NAME 까지 바꾸는 횟수를 최소한으로 구하기
+
+    알파벳 변경은 N을 기준으로 A나 Z빼면 횟수를 구함
+
+    왼쪽 오른족으로 간 횟수의 최소값
+
+    - A가 가장 길게 나타는 구간을 찾아서 제일 앞부분 인덱스를 start_index, 제일 뒷 부분 인덱스 값을 end_index에 저장
+
+    - 그 후 거리로 계산 될 수 있는 모든 경우의 수를 찾아서 min을 이용해 비교하여 값을 찾음.
+
+
+
+
+*/
+
+
+
 #include <string>
 #include <vector>
 #include <iostream>
