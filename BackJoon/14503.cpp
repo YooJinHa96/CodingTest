@@ -4,11 +4,6 @@
 
 using namespace std;
 int arr[51][51];
-struct robot
-{
-    int r, c;
-    int d;
-} typedef robot;
 
 bool exit_con(int r, int c)
 {
@@ -23,22 +18,22 @@ bool go_left(int r, int c, int d)
 {
 
     bool b = false;
-    switch ((d + 1) / 4)
+    switch ((d + 1) % 4)
     {
     case 0:
-        if (arr[r + 1][c] != 1)
+        if (arr[r - 1][c] == 0)
             b = true;
         break;
     case 1:
-        if (arr[r][c + 1] != 1)
+        if (arr[r][c - 1] == 0)
             b = true;
         break;
     case 2:
-        if (arr[r - 1][c] != 1)
+        if (arr[r + 1][c] == 0)
             b = true;
         break;
     case 3:
-        if (arr[r][c - 1] != 1)
+        if (arr[r][c + 1] == 0)
             b = true;
         break;
 
@@ -55,12 +50,8 @@ int main()
     int r, c, d;
     cin >> r >> c >> d;
 
-    robot ro;
-    ro.r = r;
-    ro.c = c;
-    ro.d = d;
-    int d_N[4] = {-1, 0, 1, 0};
-    int d_M[4] = {0, 1, 0, -1};
+    int dx[4] = {-1, 0, 1, 0};
+    int dy[4] = {0, 1, 0, -1};
     for (int i = 0; i < N; i++)
     {
         for (int k = 0; k < M; k++)
@@ -68,34 +59,34 @@ int main()
             cin >> arr[i][k];
         }
     }
+    arr[r][c] = 2;
     int count = 1;
     while (1)
     {
-        if (exit_con(ro.r, ro.c))
+      
+        bool ch = false;
+        for (int i = 0; i < 4; i++)
         {
-            if (arr[ro.r - d_N[ro.d] ][ro.c - d_M[ro.d] ] == 2)
+            d = (d + 3) % 4;
+            int nx = r + dx[d];
+            int ny = c + dy[d];
+            if (arr[nx][ny] == 0)
             {
-                ro.r -= d_N[ro.d];
-                ro.c -= d_M[ro.d];
-            }
-            else if (arr[ro.r - d_N[ro.d]][ro.c - d_M[ro.d]] == 1)
-            {
+                r += dx[d];                
+                c += dy[d];
+                arr[nx][ny] = 2;
+                ch = true;
+                count++;
                 break;
             }
         }
-        else if (go_left(ro.r, ro.c, ro.d))
-        {
-            ro.d = (ro.d + 1) / 4;
-            ro.r += d_N[ro.d];
-            ro.c += d_M[ro.d];
-            if (arr[ro.r][ro.c] == 0)
-            {
-                arr[ro.r][ro.c] =2;
-                count++;
-            }
-        }
-        else{
-            ro.d=(ro.d+1)/4;
+        if (!ch)
+        {                           //조건 2-c , 2-d일 때
+            int back = (d + 2) % 4; //바라보는 방향을 유지하기 위해서
+            if (arr[r + dx[back]][c + dy[back]] == 1)
+                break;
+            r += dx[back];
+            c += dy[back];
         }
     }
     cout << count << '\n';
