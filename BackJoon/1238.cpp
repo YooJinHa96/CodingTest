@@ -2,20 +2,22 @@
 #include <algorithm>
 #include <vector>
 #include <string>
+#include <queue>
 
 #define INF (int)1e9
 
 using namespace std;
 
 int main(){
-      ios::sync_with_stdio(0);
-	cin.tie(0); cout.tie(0);
+    
     int N,M,X;
 
     vector<int> distance;
      vector<int> r_distance;
     vector<vector<pair<int,int>>> graph;
     vector<vector<pair<int, int>>> r_graph;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> q;
+    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>> r_q;
     vector<bool> visit;
     vector<bool> r_visit;
     int R_X;
@@ -43,48 +45,58 @@ int main(){
     fill(distance.begin(),distance.end(),INF);
     fill(r_distance.begin(),r_distance.end(),INF);
     distance[X]=0;
-    visit[X]=true;
+ 
     r_distance[X]=0;
-    r_visit[X]=true;
-    for(int i=0;i<graph[X].size();i++){
 
-        distance[graph[X][i].first]=graph[X][i].second;
   
-    
-    }
-     for(int i=0;i<r_graph[X].size();i++){
-
-        r_distance[r_graph[X][i].first]=r_graph[X][i].second;
-    
-    }
     int min_val=INF;
     int r_min_val=INF;
-    for(int i=1;i<N+1;i++){       
-        min_val=INF;
-        r_min_val=INF;
-        for(int j=N ;j>0;j--){  
-         
-            if(distance[j]<min_val&&!visit[j]){
-         
-                min_val=distance[j];
-                X=j;
-                visit[X]=true;
+
+    q.push({0,X});
+    r_q.push({0,X});
+
+    int dis, now;
+    while(!q.empty()){
+        dis=q.top().first;
+        now=q.top().second;
+ 
+        q.pop();
+
+        if(!visit[now]){
+            
+            visit[now]=true;
+
+            for(int i = 0 ; i <graph[now].size();i++){
+                int cost = graph[now][i].second+dis;
+           
+                if(cost<distance[graph[now][i].first]){
+                    distance[graph[now][i].first] =cost;
+                    q.push({cost,graph[now][i].first});
+                }
             }
-            if(r_distance[j]<r_min_val&&!r_visit[j]){
-         
-                r_min_val=r_distance[j];
-                R_X=j;
-               r_visit[R_X]=true;
-         
-            }
-        }
-        for(int k=0;k<graph[X].size();k++){
-            distance[ graph[ X ][ k ].first ] = min(distance[ graph[ X ][ k ].first ],distance[ X ]+graph[ X ] [ k ].second);
-        }
-        for(int k=0;k<r_graph[R_X].size();k++){
-            r_distance[ r_graph[ R_X ][ k ].first ] = min(r_distance[ r_graph[R_X ][ k ].first ],r_distance[ R_X ]+r_graph[ R_X ] [ k ].second);
         }
     }
+  
+     while(!r_q.empty()){
+        dis=r_q.top().first;
+        now=r_q.top().second;
+        r_q.pop();
+
+        if(!r_visit[now]){
+            
+            r_visit[now]=true;
+
+            for(int i = 0 ; i <r_graph[now].size();i++){
+                int cost = r_graph[now][i].second+dis;
+
+                if(cost<r_distance[r_graph[now][i].first]){
+                    r_distance[r_graph[now][i].first] =cost;
+                    r_q.push({cost,r_graph[now][i].first});
+                }
+            }
+        }
+    }
+
     vector<int> sum;
     for(int i =1 ; i<N+1;i++){
         sum.push_back(distance[i]+r_distance[i]);
